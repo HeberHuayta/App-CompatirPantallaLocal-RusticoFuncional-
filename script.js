@@ -52,22 +52,22 @@ buttonRemote.addEventListener("click", async() => {
 
     try{
 
-        // peer = new RTCPeerConnection();
+        peer = new RTCPeerConnection();
 
-        // peer.ontrack = (event) => {
+        peer.ontrack = (event) => {
 
-        //     videoRemote.srcObject = event.streams[0]
-        // }
+            videoRemote.srcObject = event.streams[0]
+        }
 
-        // const offer = JSON.parse(offerInput.value)
+        const offer = JSON.parse(offerInput.value)
 
-        // await peer.setRemoteDescription(offer)
+        await peer.setRemoteDescription(offer)
 
-        // const answer = await peer.createAnswer()
+        const answer = await peer.createAnswer()
 
-        // await peer.setLocalDescription(answer)
+        await peer.setLocalDescription(answer)
 
-        console.log("hola")
+        console.log(answer)
 
     } catch(error){
 
