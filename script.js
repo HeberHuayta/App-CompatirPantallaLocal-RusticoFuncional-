@@ -28,11 +28,34 @@ button.addEventListener("click", async() => {
             peer.addTrack(track, stream)
         })
         
+        console.log("1")
         const offer = await peer.createOffer()
+        console.log("2")
 
         await peer.setLocalDescription(offer)
 
-        console.log(offer)
+        console.log("3")
+        await new Promise(resolve => {
+
+            if(peer.iceGatheringState === "complete"){
+                resolve()
+
+                return
+            }
+
+            //accede solo si hay cambios
+            peer.onicegatheringstatechange = () => {
+
+                if(peer.iceGatheringState === "complete"){
+                    resolve()
+                }
+            }
+
+            
+        })
+
+        console.log("4")
+        console.log(JSON.stringify(peer.localDescription))
 
     }catch(error){
 
@@ -67,7 +90,25 @@ buttonRemote.addEventListener("click", async() => {
 
         await peer.setLocalDescription(answer)
 
-        console.log(answer)
+
+        await new Promise(resolve => {
+
+            if (peer.iceGatheringState === "complete"){
+
+                resolve()
+
+                return
+            }
+
+            peer.onicegatheringstatechange = () => {
+
+                if (peer.iceGatheringState === "complete") {
+                    resolve()
+                }
+            }
+        })
+
+        console.log(JSON.stringify(peer.localDescription))
 
     } catch(error){
 
